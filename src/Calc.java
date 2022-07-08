@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,24 +23,31 @@ public class Calc {
         String[][] gui = new String[maxHeightInt][maxWidthInt];
 
         int xPos = 0;
-        for (Wall wall: walls){
-            for (int i = 0; i < maxHeightInt; i++){
-                for (int j = 0; j < xPos + maxWidthInt; j ++){
-                    System.out.print("##");
+        for (int i = 0; i < maxHeightInt; i++){
+            for (Wall wall: walls){
+                if ( ((int) (wall.height * 2) > (maxHeightInt - i)) ){
+                    for (int j = 0; j < (wall.width * 2); j++) {
+                        System.out.print("##");
+                    }
+                } else{
+                    for (int j = 0; j < (wall.width * 2); j++) {
+                        System.out.print("  ");
+                    }
                 }
-                System.out.println();
+                System.out.print(" ");
             }
-            xPos = (int) (wall.width * 2);
+            System.out.println();
         }
 
     }
 
     public static void test(){
-        Scanner in = new Scanner(System.in);
+        ArrayList<Wall> walls = new ArrayList<Wall>();
+        walls.add(new Wall(5,3,1));
+        walls.add(new Wall(5,2,1));
+        walls.add(new Wall(2,3,1));
 
-        Paint paint = new Paint("Red", 5, 12, 20);
-
-        paint.printData();
+        printGUI(walls);
 
     }
 
@@ -94,9 +102,9 @@ public class Calc {
         System.out.println("\nDefault paints:");
         boolean paintDecided = false;
         while (!paintDecided){
-            System.out.print("Available colours: ");
+            System.out.println("Available colours:");
             for (Paint paint: defaultPaints){
-                System.out.print(paint.colour + "\t");
+                System.out.println("\t-> " + paint.colour);
             }
             System.out.print("\nEnter paint colour to get more information, or enter \"n\" to add new paint data\n>>>");
             String colourChosen = in.nextLine();
@@ -197,19 +205,20 @@ public class Calc {
         }
 
         //Data printout
-        System.out.println("\nData printout");
+        System.out.println("\n-------------Data printout--------------");
         System.out.println("========================================");
         System.out.println(numWalls + " walls");
         for (Wall wall: walls){
             System.out.println("\t-> " + wall.width + " x " + wall.height + ", " + wall.layers + " layers, " + wall.obstacles.size() + " obstacles");
             for (Obstacle obs: wall.obstacles){
                 if (obs.isCircle){
-                    System.out.println("\t\t-> r=" + obs.width + ", circular");
+                    System.out.println("\t\t-> r = " + obs.width + ", circular");
                 } else {
                     System.out.println("\t\t-> " + obs.width + " x " + obs.height + ", rectangular");
                 }
             }
         }
+        System.out.println();
         paintUsed.printData();
         System.out.println("========================================");
 
@@ -219,6 +228,7 @@ public class Calc {
 
         System.out.println("\nYou need " + numTubs + " tub(s) of paint (£" + (paintUsed.price * numTubs) + "), " + amountOfPaint + "L of paint in total, to paint all " + numWalls + " walls.");
 
+        System.out.println("\nHere are your walls");
         printGUI(walls);
     }
 }
