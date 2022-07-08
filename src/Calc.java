@@ -10,6 +10,8 @@ public class Calc {
     }
 
     public static void printGUI(ArrayList<Wall> walls){
+        //Take an array of walls and print their relative sizes to the console
+
         float maxHeight = 0, maxWidth = 0;
 
         for (Wall wall: walls){
@@ -55,21 +57,22 @@ public class Calc {
         boolean validInputs = false;
         float[] tempArray = {0,0};
 
+        //Loop until valid inputs are given
         while (!validInputs){
             System.out.print(">>>");
             String[] tempDimension = scan.nextLine().split(",");
 
             if (tempDimension.length == 2){
                 try {
-                    tempArray[0] = Float.parseFloat(tempDimension[0]);
-                    tempArray[1] = Float.parseFloat(tempDimension[1]);
+                    tempArray[0] = Math.abs(Float.parseFloat(tempDimension[0]));
+                    tempArray[1] = Math.abs(Float.parseFloat(tempDimension[1]));
                     validInputs = true;
                 }catch(NumberFormatException e){
                     System.out.println("Not floats");
                 }
             } else if (allowSingleInput){
                 try {
-                    tempArray[0] = Float.parseFloat(tempDimension[0]);
+                    tempArray[0] = Math.abs(Float.parseFloat(tempDimension[0]));
                     validInputs = true;
                 }catch(NumberFormatException e){
                     System.out.println("Not floats");
@@ -116,12 +119,12 @@ public class Calc {
                         //Get new paint values
                         System.out.print("What colour is the paint?\n>>>");
                         paintColour = in.nextLine();
-                        System.out.print("How much paint is in a tub?\n>>>");
-                        paintInTub = Float.parseFloat(in.nextLine());
+                        System.out.print("How much paint is in a tub (litres)?\n>>>");
+                        paintInTub = Math.abs(Float.parseFloat(in.nextLine()));
                         System.out.print("How much surface area (m^2) can 1 litre cover?\n>>>");
-                        paintCoverage = Float.parseFloat(in.nextLine());
+                        paintCoverage = Math.abs(Float.parseFloat(in.nextLine()));
                         System.out.print("How much does this paint cost per tub?\n>>>");
-                        costPerTub = Float.parseFloat(in.nextLine());
+                        costPerTub = Math.abs(Float.parseFloat(in.nextLine()));
 
                         defaultPaints.add(new Paint(paintColour, paintInTub, paintCoverage, costPerTub));
 
@@ -153,30 +156,30 @@ public class Calc {
 
         //Get the number of walls
         System.out.print("How many walls?\n>>>");
-        int numWalls = Integer.parseInt(in.nextLine());
+        int numWalls = Math.abs(Integer.parseInt(in.nextLine()));
         ArrayList<Wall> walls = new ArrayList<Wall>();
 
         //Iterate through each wall
         for (int i = 0; i < numWalls; i++) {
 
             //Get dimensions of the current wall
-            System.out.println("Enter dimensions of wall " + (i + 1) + " in the form <width,height>");
+            System.out.println("Enter dimensions of wall " + (i + 1) + " in the form <width,height> (metres)");
             float[] tempReturn = getFloatDimensions(in, false);
             float width = tempReturn[0];
             float height = tempReturn[1];
 
             //Get number of layers of paint to use on the current wall
             System.out.print("How many layers do you want on this wall?\n>>>");
-            int numLayers = Integer.parseInt(in.nextLine());
+            int numLayers = Math.abs(Integer.parseInt(in.nextLine()));
             walls.add(new Wall(width, height, numLayers));
 
             //Get number of obstacles for the current wall
             System.out.print("How many obstacles on this wall?\n>>>");
-            int numObstacles = Integer.parseInt(in.nextLine());
+            int numObstacles = Math.abs(Integer.parseInt(in.nextLine()));
 
             switch (numObstacles) {
                 case 0:
-                    System.out.println("Natural light is important");
+                    System.out.println("What a boring wall");
                     break;
                 default:
                     //Iterate through each obstacle for the current wall
